@@ -7,6 +7,8 @@ import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import ru.chatan.switchmob.filter.EntityTypeFilter
+import ru.chatan.switchmob.filter.RandomEntityTypeFilter
 
 class HitMobEventListener : Listener {
     @EventHandler
@@ -34,10 +36,11 @@ class HitMobEventListener : Listener {
     private fun spawnRandomEntity(
         world: World,
         damager: Entity,
-        location: Location
+        location: Location,
+        entityTypeFilter: EntityTypeFilter = RandomEntityTypeFilter()
     ) {
         val randomEntityType =
-            EntityType.entries.filter { it.isAlive && it != EntityType.ENDER_DRAGON && it.isSpawnable }.random()
+            EntityType.entries.filter(entityTypeFilter::filter).random()
 
         val entity = world.spawnEntity(location, randomEntityType)
         if (entity is Mob && damager is LivingEntity) {
