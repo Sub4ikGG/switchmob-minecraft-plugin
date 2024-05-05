@@ -1,3 +1,5 @@
 # SwitchMob Minecraft Plugin
-Funny minecraft 1.20.4 paper Kotlin plugin  
-~ Replaces a killed mob with a random one (30% chance)
+Funny minecraft paper plugin  
+~ Replaces a killed mob with a random one (30% chance)  
+
+100% Kotlin
