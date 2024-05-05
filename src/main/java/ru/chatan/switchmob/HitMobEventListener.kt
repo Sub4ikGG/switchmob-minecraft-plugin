@@ -1,0 +1,59 @@
+package ru.chatan.switchmob
+
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.entity.*
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+
+class HitMobEventListener : Listener {
+    @EventHandler
+    fun onHit(event: EntityDamageByEntityEvent) {
+        try {
+            val isEntityKilled = event.damage >= (event.entity as LivingEntity).health
+            if (!isEntityKilled) return
+            if (!SwitchChance.canSwitch()) return
+
+            val world = event.entity.world
+            val entity = event.entity as? LivingEntity ?: return
+
+            val entityDeathLocation = entity.location
+            spawnEffects(world = world, location = entityDeathLocation)
+            spawnRandomEntity(
+                world = world,
+                damager = event.damager,
+                location = entityDeathLocation
+            )
+        } catch (e: Exception) {
+            Bukkit.getLogger().info("[switchmob]: Caused exception ${e.localizedMessage}")
+        }
+    }
+
+    private fun spawnRandomEntity(
+        world: World,
+        damager: Entity,
+        location: Location
+    ) {
+        val randomEntityType =
+            EntityType.entries.filter { it.isAlive && it != EntityType.ENDER_DRAGON && it.isSpawnable }.random()
+
+        val entity = world.spawnEntity(location, randomEntityType)
+        if (entity is Mob && damager is LivingEntity) {
+            entity.target = damager
+            entity.isAggressive = true
+        }
+    }
+
+    private fun spawnEffects(
+        world: World,
+        location: Location
+    ) {
+        if (SwitchChance.canLightning())
+            world.strikeLightningEffect(location)
+
+        if (SwitchChance.canExplosive())
+            world.createExplosion(location, 1f, false, false)
+    }
+}

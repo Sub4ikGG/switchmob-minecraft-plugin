@@ -1,0 +1,4 @@
+name: switchmob
+version: '${version}'
+main: ru.chatan.switchmob.SwitchMob
+api-version: '1.20'
