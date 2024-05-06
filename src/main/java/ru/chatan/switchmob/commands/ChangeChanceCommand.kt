@@ -4,7 +4,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import ru.chatan.switchmob.SwitchChance
 import ru.chatan.switchmob.SwitchMob
-import ru.chatan.switchmob.commands.TogglePluginCommand.Companion
 
 class ChangeChanceCommand : Command(
     COMMAND_NAME,
@@ -20,7 +19,7 @@ class ChangeChanceCommand : Command(
 
     override fun execute(p0: CommandSender, p1: String, p2: Array<out String>?): Boolean {
         val chanceTarget = p2?.getOrNull(0)
-        val percentage = p2?.getOrNull(1)?.toIntOrNull()
+        val percentage = p2?.getOrNull(1)?.toIntOrNull().takeIf { it in 0..100 }
 
         if (chanceTarget == null || percentage == null) {
             p0.sendMessage("${SwitchMob.TAG}: $USAGE")
