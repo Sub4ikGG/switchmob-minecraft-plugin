@@ -30,10 +30,11 @@ class HitMobEventListener : Listener {
                 damager = event.damager,
                 location = entityDeathLocation
             )
-            // TODO: org.bukkit.craftbukkit.v1_20_R3.entity.CraftItem cannot be cast to class org.bukkit.entity.LivingEntity
         } catch (e: Exception) {
-            Bukkit.getLogger().info("[switchmob]: Caused exception ${e.localizedMessage}")
+            Bukkit.getLogger().info("[switchmob]: Cause exception ${e.localizedMessage}")
         }
+        catch (_: ClassCastException) {}
+        catch (_: TypeCastException) {}
     }
 
     private fun spawnRandomEntity(
