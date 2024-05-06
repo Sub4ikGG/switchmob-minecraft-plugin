@@ -2,3 +2,13 @@ name: switchmob
 version: '${version}'
 main: ru.chatan.switchmob.SwitchMob
 api-version: '1.20'
+commands:
+  switchmobtoggle:
+    description: Toggle plugin
+    usage: /switchmobtoggle
+    permission: switchmob.toggleplugin
+
+  smchance:
+    description: Change plugin chance
+    usage: /smchance
+    permission: switchmob.changechance

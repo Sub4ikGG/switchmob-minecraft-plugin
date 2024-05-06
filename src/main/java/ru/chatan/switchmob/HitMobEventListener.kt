@@ -13,10 +13,12 @@ import ru.chatan.switchmob.filter.RandomEntityTypeFilter
 class HitMobEventListener : Listener {
     @EventHandler
     fun onHit(event: EntityDamageByEntityEvent) {
+        if (!SwitchMob.isPluginEnabled()) return
+
         try {
             val isEntityKilled = event.damage >= (event.entity as LivingEntity).health
             if (!isEntityKilled) return
-            if (!SwitchChance.canSwitch()) return
+            if (!SwitchChance.canSpawn()) return
 
             val world = event.entity.world
             val entity = event.entity as? LivingEntity ?: return
@@ -28,6 +30,7 @@ class HitMobEventListener : Listener {
                 damager = event.damager,
                 location = entityDeathLocation
             )
+            // TODO: org.bukkit.craftbukkit.v1_20_R3.entity.CraftItem cannot be cast to class org.bukkit.entity.LivingEntity
         } catch (e: Exception) {
             Bukkit.getLogger().info("[switchmob]: Caused exception ${e.localizedMessage}")
         }
