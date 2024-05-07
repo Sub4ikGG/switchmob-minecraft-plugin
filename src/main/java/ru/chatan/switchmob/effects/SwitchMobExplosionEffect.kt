@@ -1,7 +1,6 @@
 package ru.chatan.switchmob.effects
 
 import org.bukkit.Location
-import org.bukkit.World
 import ru.chatan.switchmob.SwitchMobEffect
 
 class SwitchMobExplosionEffect : SwitchMobEffect {

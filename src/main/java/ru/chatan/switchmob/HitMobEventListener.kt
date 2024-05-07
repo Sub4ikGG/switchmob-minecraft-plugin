@@ -2,8 +2,7 @@ package ru.chatan.switchmob
 
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.World
-import org.bukkit.entity.*
+import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
