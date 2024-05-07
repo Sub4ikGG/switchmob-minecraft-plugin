@@ -39,7 +39,7 @@ class HitMobEventListener : Listener {
     private fun spawnRandomEffect(location: Location) {
         val generatedChance = SwitchChance.getChance()
         val randomEffect = SwitchMobEffectType.entries.filter {
-            it != SPAWN && (SwitchMob.getEffectChance(it) ?: it.baseChance) > generatedChance
+            it != SPAWN && (SwitchMob.getEffectChance(it) ?: it.baseChance) >= generatedChance
         }.randomOrNull()
 
         val effect = when (randomEffect) {
