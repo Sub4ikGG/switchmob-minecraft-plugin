@@ -8,12 +8,12 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
 import ru.chatan.switchmob.SwitchMobEffect
 import ru.chatan.switchmob.filter.EntityTypeFilter
-import ru.chatan.switchmob.filter.RandomEntityTypeFilter
+import ru.chatan.switchmob.filter.DefaultEntityTypeFilter
 
 class SwitchMobSpawnEffect(
     private val world: World,
     private val damager: Entity,
-    private val entityTypeFilter: EntityTypeFilter = RandomEntityTypeFilter()
+    private val entityTypeFilter: EntityTypeFilter = DefaultEntityTypeFilter(world = world)
 ) : SwitchMobEffect {
     override fun createEffect(location: Location) {
         val randomEntityType =
