@@ -1,4 +1,4 @@
-package ru.chatan.switchmob.commands
+package ru.chatan.switchmob.commands.toggleplugin
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -8,7 +8,7 @@ class TogglePluginCommand : Command(
     COMMAND_NAME,
     DESCRIPTION,
     USAGE,
-    listOf("smt")
+    listOf("smtoggle")
 ) {
     companion object {
         const val COMMAND_NAME = "switchmobtoggle"
@@ -31,4 +31,13 @@ class TogglePluginCommand : Command(
 
         return true
     }
+
+    override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>?): MutableList<String> {
+        return when (args?.size) {
+            1 -> getToggleArguments()
+            else -> mutableListOf()
+        }
+    }
+
+    private fun getToggleArguments() = mutableListOf("true", "false")
 }

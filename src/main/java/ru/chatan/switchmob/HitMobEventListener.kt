@@ -7,8 +7,11 @@ import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import ru.chatan.switchmob.filter.EntityTypeFilter
-import ru.chatan.switchmob.filter.RandomEntityTypeFilter
+import ru.chatan.switchmob.SwitchMobEffectType.*
+import ru.chatan.switchmob.effects.SwitchMobExplosionEffect
+import ru.chatan.switchmob.effects.SwitchMobFireworksEffect
+import ru.chatan.switchmob.effects.SwitchMobLightningEffect
+import ru.chatan.switchmob.effects.SwitchMobSpawnEffect
 
 class HitMobEventListener : Listener {
     @EventHandler
@@ -18,18 +21,14 @@ class HitMobEventListener : Listener {
         try {
             val isEntityKilled = event.damage >= (event.entity as LivingEntity).health
             if (!isEntityKilled) return
-            if (!SwitchChance.canSpawn()) return
+            if ((SwitchMob.getEffectChance(effectType = SPAWN) ?: SPAWN.baseChance) < SwitchChance.getChance()) return
 
             val world = event.entity.world
             val entity = event.entity as? LivingEntity ?: return
 
             val entityDeathLocation = entity.location
-            spawnEffects(world = world, location = entityDeathLocation)
-            spawnRandomEntity(
-                world = world,
-                damager = event.damager,
-                location = entityDeathLocation
-            )
+            spawnRandomEffect(location = entityDeathLocation)
+            SwitchMobSpawnEffect(world = world, damager = event.damager).createEffect(location = entityDeathLocation)
         }
         catch (_: ClassCastException) {}
         catch (_: TypeCastException) {}
@@ -38,30 +37,19 @@ class HitMobEventListener : Listener {
         }
     }
 
-    private fun spawnRandomEntity(
-        world: World,
-        damager: Entity,
-        location: Location,
-        entityTypeFilter: EntityTypeFilter = RandomEntityTypeFilter()
-    ) {
-        val randomEntityType =
-            EntityType.entries.filter(entityTypeFilter::filter).random()
+    private fun spawnRandomEffect(location: Location) {
+        val generatedChance = SwitchChance.getChance()
+        val randomEffect = SwitchMobEffectType.entries.filter {
+            it != SPAWN && (SwitchMob.getEffectChance(it) ?: it.baseChance) > generatedChance
+        }.randomOrNull()
 
-        val entity = world.spawnEntity(location, randomEntityType)
-        if (entity is Mob && damager is LivingEntity) {
-            entity.target = damager
-            entity.isAggressive = true
+        val effect = when (randomEffect) {
+            LIGHTNING -> SwitchMobLightningEffect()
+            EXPLOSION -> SwitchMobExplosionEffect()
+            FIREWORKS -> SwitchMobFireworksEffect()
+            else -> null
         }
-    }
 
-    private fun spawnEffects(
-        world: World,
-        location: Location
-    ) {
-        if (SwitchChance.canLightning())
-            world.strikeLightningEffect(location)
-
-        if (SwitchChance.canExplosive())
-            world.createExplosion(location, 1f, false, false)
+        effect?.createEffect(location = location)
     }
 }

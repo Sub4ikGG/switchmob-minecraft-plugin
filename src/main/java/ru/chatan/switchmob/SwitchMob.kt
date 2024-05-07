@@ -2,8 +2,8 @@ package ru.chatan.switchmob
 
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-import ru.chatan.switchmob.commands.ChangeChanceCommand
-import ru.chatan.switchmob.commands.TogglePluginCommand
+import ru.chatan.switchmob.commands.changechance.ChangeChanceCommand
+import ru.chatan.switchmob.commands.toggleplugin.TogglePluginCommand
 
 class SwitchMob : JavaPlugin() {
 
@@ -18,12 +18,19 @@ class SwitchMob : JavaPlugin() {
     }
 
     companion object {
+        private var chanceMap: MutableMap<SwitchMobEffectType, Int> = mutableMapOf()
         private var PLUGIN_ENABLED = true
         const val TAG = "[SwitchMob]"
 
         fun togglePlugin(toggle: Boolean) {
             PLUGIN_ENABLED = toggle
         }
+
+        fun changeSwitchMobEffectChance(effectType: SwitchMobEffectType, chance: Int) {
+            chanceMap[effectType] = chance
+        }
+
+        fun getEffectChance(effectType: SwitchMobEffectType): Int? = chanceMap[effectType]
 
         fun isPluginEnabled() = PLUGIN_ENABLED
     }
