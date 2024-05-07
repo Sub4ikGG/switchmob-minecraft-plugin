@@ -4,6 +4,5 @@ Funny minecraft paper plugin
 
 100% Kotlin
 
-
-https://github.com/Sub4ikGG/switchmob-minecraft-plugin/assets/98654420/a9eab68e-5a91-4db3-ae8b-05a939bdb5d3
+https://github.com/Sub4ikGG/switchmob-minecraft-plugin/assets/98654420/ce780726-ccec-459e-a5fd-55eb598bde60
 
