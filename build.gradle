@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'ru.chatan'
-version = '1.0.1-RC0'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
