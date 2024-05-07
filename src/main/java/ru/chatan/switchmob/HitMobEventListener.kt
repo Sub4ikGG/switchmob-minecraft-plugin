@@ -30,11 +30,12 @@ class HitMobEventListener : Listener {
                 damager = event.damager,
                 location = entityDeathLocation
             )
-        } catch (e: Exception) {
-            Bukkit.getLogger().info("[switchmob]: Cause exception ${e.localizedMessage}")
         }
         catch (_: ClassCastException) {}
         catch (_: TypeCastException) {}
+        catch (e: Exception) {
+            Bukkit.getLogger().info("[switchmob]: Cause exception ${e.localizedMessage}")
+        }
     }
 
     private fun spawnRandomEntity(
